@@ -1,0 +1,11 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.Home>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Website.Controllers;
+@{
+    Layout = "Master.cshtml";
+}
+
+<section class="home">
+    @Html.GetGridHtml(Model.Content, "bodyText", "bootstrap3-fluid")
+</section>
+

@@ -1,0 +1,83 @@
+﻿@inherits UmbracoViewPage<Website.Models.EmployeePageModel>
+@using Website.Models;
+@{
+    Layout = "Master.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form method="get">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" name="query" placeholder="Name..." class="form-control" />
+                    </div>
+                    <div class="col">
+                        <select id="sort" name="sort" class="form-control">
+                            <option value="1"@Model.IsSelected("sort", "1")>Sort by name</option>
+                            <option value="2"@Model.IsSelected("sort", "2")>Sort by age</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <input type="submit" value="Search" class="btn btn-success" />
+                    </div>
+                    <div class="col text-right">
+                        <a href="/Umbraco/Api/Cron/SyncEmployees" class="btn btn-danger">Run the cronjob</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container employees pt-5">
+    <div class="row header">
+        <div class="col">
+            ID
+        </div>
+        <div class="col">
+            Name
+        </div>
+        <div class="col">
+            Salary
+        </div>
+        <div class="col">
+            Age
+        </div>
+        <div class="col">
+            Image
+        </div>
+    </div>
+    @if (Model.EmployeeList.Any())
+    {
+        foreach (IContent employeeModel in Model.EmployeeList)
+        {
+            <div class="row employee">
+                <div class="col">
+                    @employeeModel.GetValue("employeeId")
+                </div>
+                <div class="col">
+                    @employeeModel.GetValue("employeeName")
+                </div>
+                <div class="col">
+                    @employeeModel.GetValue("salary")
+                </div>
+                <div class="col">
+                    @employeeModel.GetValue("age")
+                </div>
+                <div class="col">
+                    @if (!string.IsNullOrEmpty(employeeModel.GetValue<string>("profileImage")))
+                    {
+                        <img src="@employeeModel.GetValue("profileImage")" />
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="no-results">
+            No employees was found.
+        </div>
+    }
+</div>

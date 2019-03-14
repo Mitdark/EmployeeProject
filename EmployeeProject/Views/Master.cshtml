@@ -1,0 +1,42 @@
+﻿@inherits UmbracoTemplatePage
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>@Model.Content.Name</title>
+
+    <link rel="stylesheet" href="@Url.Content("~/Assets/css/app.css")" />
+    @RenderSection("Header", required: false)
+</head>
+
+<body>
+    <header class="container">
+        <div class="row">
+            <div class="col">
+                <nav class="nav-bar">
+                    @Html.Partial("~/Views/Partials/Navigation/TopNavigation.cshtml")
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="row">
+            <div class="col">
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    <script src="@Url.Content("~/Assets/scripts/app.js")"></script>
+</body>
+
+</html>
