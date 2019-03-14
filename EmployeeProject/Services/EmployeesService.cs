@@ -150,10 +150,6 @@ namespace Website.Services {
 
         private string DownloadImage(EmployeeModel employeeModel)
         {
-            List<string> temp = new List<string>();
-
-            IMedia media;
-
             string fileName = Path.GetFileName(employeeModel.ProfileImage);
             string savePath = IOHelper.MapPath(imageDownloadPath + fileName);
 
@@ -164,7 +160,7 @@ namespace Website.Services {
 
             using (FileStream fs = new FileStream(savePath, FileMode.Open))
             {
-                media = MediaService.CreateMedia(Path.GetFileNameWithoutExtension(employeeModel.ProfileImage), UmbracoConstants.Media.Employees, "Image");
+                IMedia media = MediaService.CreateMedia(Path.GetFileNameWithoutExtension(employeeModel.ProfileImage), UmbracoConstants.Media.Employees, "Image");
                 media.SetValue("umbracoFile", fileName, fs);
 
                 MediaService.Save(media);
