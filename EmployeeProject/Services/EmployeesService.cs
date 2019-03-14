@@ -48,8 +48,6 @@ namespace Website.Services {
                 {
                     if (content.GetValue<string>("rawData") == JsonConvert.SerializeObject(employeeModel))
                     {
-                        currentEmployees.Remove(employeeModel.Id);
-
                         statusList.Add(new EmployeeStatus
                         {
                             EmployeeId = employeeModel.Id,
@@ -58,8 +56,6 @@ namespace Website.Services {
                     }
                     else
                     {
-                        currentEmployees.Remove(employeeModel.Id);
-
                         UpdateEmployee(statusList, employeeModel, content);
 
                         statusList.Add(new EmployeeStatus
@@ -67,16 +63,11 @@ namespace Website.Services {
                             EmployeeId = employeeModel.Id,
                             Status = "Updated"
                         });
-
                     }
                 }
                 else
                 {
-                    content = ContentService.CreateContent(employeeModel.EmployeeName, UmbracoConstants.Content.Employees, "employee");
-
-                    currentEmployees.Remove(employeeModel.Id);
-
-                    InsertNewEmployee(statusList, employeeModel, content);
+                    InsertNewEmployee(statusList, employeeModel);
 
                     statusList.Add(new EmployeeStatus
                     {
@@ -84,6 +75,8 @@ namespace Website.Services {
                         Status = "New"
                     });
                 }
+
+                currentEmployees.Remove(employeeModel.Id);
             }
 
             if (currentEmployees.Any())
@@ -97,8 +90,10 @@ namespace Website.Services {
             return statusList;
         }
 
-        private void InsertNewEmployee(List<EmployeeStatus> statusList, EmployeeModel employeeModel, IContent content)
+        private void InsertNewEmployee(List<EmployeeStatus> statusList, EmployeeModel employeeModel)
         {
+            IContent content = ContentService.CreateContent(employeeModel.EmployeeName, UmbracoConstants.Content.Employees, "employee");
+            
             content.SetValue("employeeId", employeeModel.Id);
             content.SetValue("employeeName", employeeModel.EmployeeName);
             content.SetValue("salary", employeeModel.EmployeeSalary);
