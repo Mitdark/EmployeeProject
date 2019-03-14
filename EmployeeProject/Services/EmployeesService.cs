@@ -56,7 +56,7 @@ namespace Website.Services {
                     }
                     else
                     {
-                        UpdateEmployee(statusList, employeeModel, content);
+                        UpdateEmployee(employeeModel, content);
 
                         statusList.Add(new EmployeeStatus
                         {
@@ -67,7 +67,7 @@ namespace Website.Services {
                 }
                 else
                 {
-                    InsertNewEmployee(statusList, employeeModel);
+                    InsertNewEmployee(employeeModel);
 
                     statusList.Add(new EmployeeStatus
                     {
@@ -83,14 +83,20 @@ namespace Website.Services {
             {
                 foreach (IContent content in currentEmployees.Values)
                 {
-                    DeleteEmployee(statusList, content);
+                    DeleteEmployee(content);
+
+                    statusList.Add(new EmployeeStatus
+                    {
+                        EmployeeId = content.GetValue<int>("employeeId"),
+                        Status = "Deleted"
+                    });
                 }
             }
 
             return statusList;
         }
 
-        private void InsertNewEmployee(List<EmployeeStatus> statusList, EmployeeModel employeeModel)
+        private void InsertNewEmployee(EmployeeModel employeeModel)
         {
             IContent content = ContentService.CreateContent(employeeModel.EmployeeName, UmbracoConstants.Content.Employees, "employee");
             
@@ -110,7 +116,7 @@ namespace Website.Services {
             ContentService.SaveAndPublishWithStatus(content);
         }
 
-        private void UpdateEmployee(List<EmployeeStatus> statusList, EmployeeModel employeeModel, IContent content)
+        private void UpdateEmployee(EmployeeModel employeeModel, IContent content)
         {
             content.SetValue("employeeId", employeeModel.Id);
             content.SetValue("employeeName", employeeModel.EmployeeName);
@@ -127,15 +133,9 @@ namespace Website.Services {
             ContentService.SaveAndPublishWithStatus(content);
         }
 
-        private void DeleteEmployee(List<EmployeeStatus> statusList, IContent content)
+        private void DeleteEmployee(IContent content)
         {
             ContentService.Delete(content);
-
-            statusList.Add(new EmployeeStatus
-            {
-                EmployeeId = content.GetValue<int>("employeeId"),
-                Status = "Deleted"
-            });
         }
 
         public List<EmployeeModel> RetrieveEmployeeList(string url)
