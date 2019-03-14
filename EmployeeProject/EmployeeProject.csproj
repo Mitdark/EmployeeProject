@@ -284,7 +284,6 @@
   <ItemGroup>
     <Compile Include="Controllers\CronController.cs" />
     <Compile Include="Controllers\EmployeesPageController.cs" />
-    <Compile Include="Models\EmployeeImage.cs" />
     <Compile Include="Models\EmployeeStatus.cs" />
     <Compile Include="Models\EmployeePageModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
